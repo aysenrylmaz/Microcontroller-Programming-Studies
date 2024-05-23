@@ -1,14 +1,14 @@
-#include <DHT.h>
+#include <dht11.h>
 
-#define DHTPIN_1 2     // DHT11 sensörlerinin bağlı olduğu pinler
-#define DHTPIN_2 3
+#define DHT11PIN_1 2     // DHT11 sensörlerinin bağlı olduğu pinler
+#define DHT11PIN_2 3
 #define ANALOG_PIN A0  // Analog sensörlerin bağlı olduğu pin
 #define GAS_PIN A1     // Gaz sensörünün bağlı olduğu pin
 
-#define DHTTYPE DHT11   // DHT tipi (DHT11 veya DHT22, DHT22 kullanılıyorsa değiştirin)
+#define DHT11TYPE DHT11  
 
-DHT dht_1(DHTPIN_1, DHTTYPE);
-DHT dht_2(DHTPIN_2, DHTTYPE);
+dht11 dht_1(DHTPIN_1, DHTTYPE);
+dht11 dht_2(DHTPIN_2, DHTTYPE);
 
 void setup() {
   Serial.begin(9600);
