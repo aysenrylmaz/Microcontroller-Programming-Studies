@@ -1,32 +1,38 @@
-#include <dht11.h>
+#include <DHT.h>
 
 #define DHTPIN_1 2     // DHT11 sensörlerinin bağlı olduğu pinler
 #define DHTPIN_2 3
 #define ANALOG_PIN A0  // Analog sensörlerin bağlı olduğu pin
+#define GAS_PIN A1     // Gaz sensörünün bağlı olduğu pin
 
-#define DHTTYPE DHT11   // DHT tipi 
+#define DHTTYPE DHT11   // DHT tipi (DHT11 veya DHT22, DHT22 kullanılıyorsa değiştirin)
 
-dht DHT_1;
-dht DHT_2;
+DHT dht_1(DHTPIN_1, DHTTYPE);
+DHT dht_2(DHTPIN_2, DHTTYPE);
 
 void setup() {
   Serial.begin(9600);
   Serial.println("Akıllı Ev Sistemi Başlatılıyor...");
+  dht_1.begin();
+  dht_2.begin();
 }
 
 void loop() {
   delay(2000);  // 2 saniye bekleyelim
 
   // İlk DHT11 sensöründen sıcaklık ve nem verilerini okuyalım
-  int16_t humidity_1 = DHT_1.readHumidity();
-  int16_t temperature_1 = DHT_1.readTemperature();
+  float humidity_1 = dht_1.readHumidity();
+  float temperature_1 = dht_1.readTemperature();
 
   // İkinci DHT11 sensöründen sıcaklık ve nem verilerini okuyalım
-  int16_t humidity_2 = DHT_2.readHumidity();
-  int16_t temperature_2 = DHT_2.readTemperature();
+  float humidity_2 = dht_2.readHumidity();
+  float temperature_2 = dht_2.readTemperature();
 
   // Analog sensörden veriyi okuyalım (örneğin LDR)
   int lightIntensity = analogRead(ANALOG_PIN);
+
+  // Gaz sensöründen veriyi okuyalım
+  int gasValue = analogRead(GAS_PIN);
 
   // Verileri seri monitöre yazdıralım
   Serial.println("Sensör 1:");
@@ -47,4 +53,7 @@ void loop() {
 
   Serial.print("Işık Şiddeti: ");
   Serial.println(lightIntensity);
+
+  Serial.print("Gaz Değeri: ");
+  Serial.println(gasValue);
 }
